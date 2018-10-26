@@ -117,14 +117,14 @@ function initialize_cliquebait() {
 	set_genesis_signer_address $CBROOT/genesis.json $DEPLOY_ACCOUNT_ADDRESS
 
 	# load extra specified accounts
-	if [ -s "/extra-accounts.json" ]; then
+	if [ -s "/cliquebait/extra-accounts.json" ]; then
 		# Add these accounts to the unlock list
-		cat /extra-accounts.json | jq -r '"0x" + .[].keystore.address' >> $CBROOT/accounts
+		cat /cliquebait/extra-accounts.json | jq -r '"0x" + .[].keystore.address' >> $CBROOT/accounts
 		# Seed the passwords to unlock the extra accounts
-		cat /extra-accounts.json | jq -r '.[].password' >> $CBROOT/account-passwords
+		cat /cliquebait/extra-accounts.json | jq -r '.[].password' >> $CBROOT/account-passwords
 
 		# Put their blobs in the keystore directory
-		for account in `cat extra-accounts.json| jq -c '.[]'`; do
+		for account in `cat /cliquebait/extra-accounts.json| jq -c '.[]'`; do
 			echo "$account" | jq .keystore > $CBROOT/keystore/0x`echo "$account" | jq -r .keystore.address`.json
 		done
 	fi
